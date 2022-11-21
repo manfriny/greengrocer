@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/auth/components/custom_text_field.dart';
 
@@ -11,10 +12,60 @@ class SignInScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              color: Colors.green,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Nome do APP
+                const Text.rich(
+                  TextSpan(
+                    style: TextStyle(
+                      fontSize: 40,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Green',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'grocer',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                //Categorias
+                SizedBox(
+                  height: 30,
+                  child: DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                    ),
+                    child: AnimatedTextKit(
+                      pause: Duration.zero,
+                      repeatForever: true,
+                      animatedTexts: [
+                        FadeAnimatedText('Frutas'),
+                        FadeAnimatedText('Verduras'),
+                        FadeAnimatedText('Legumes'),
+                        FadeAnimatedText('Carnes'),
+                        FadeAnimatedText('Cereais'),
+                        FadeAnimatedText('Laticíneos'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+
+          //Formulário
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 32,
@@ -34,6 +85,7 @@ class SignInScreen extends StatelessWidget {
                   icon: Icons.email,
                   label: 'e-Mail',
                 ),
+
                 //Senha
                 const CustomTextField(
                   icon: Icons.lock,
@@ -41,6 +93,7 @@ class SignInScreen extends StatelessWidget {
                   isSecret: true,
                 ),
 
+                //Botão de Entrar
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
@@ -57,6 +110,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
 
+                //Esqueceu a Senha
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
@@ -68,6 +122,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
 
+                //Divisor
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Row(
@@ -92,6 +147,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
 
+                //Botão criar conta
                 SizedBox(
                   height: 50,
                   child: OutlinedButton(
