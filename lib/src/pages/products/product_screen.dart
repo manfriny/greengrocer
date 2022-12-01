@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
+import 'package:greengrocer/src/pages/common/quantity_widget.dart';
+import 'package:greengrocer/src/services/utils_services.dart';
 
 class ProductScreen extends StatelessWidget {
   final ItemModel item;
+  final UtilsServices utilsServices = UtilsServices();
 
-  const ProductScreen({
+  ProductScreen({
     super.key,
     required this.item,
   });
@@ -13,24 +17,119 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(230),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: Image.asset(item.imgUrl),
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(50),
+          //Conteudo
+          Column(
+            children: [
+              Expanded(
+                child: Hero(
+                  tag: item.imgUrl,
+                  child: Image.asset(item.imgUrl),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade600,
-                    offset: const Offset(0, 2),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(32.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(50),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade600,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      //Nome - Quantidade
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              item.itemName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 27,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const QuantityWidget(),
+                        ],
+                      ),
+
+                      //Preco
+                      Text(
+                        utilsServices.priceToCurrency(item.price),
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.customSwatchColor,
+                        ),
+                      ),
+
+                      //Descricao
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: SingleChildScrollView(
+                            child: Text(
+                              item.description,
+                              style: const TextStyle(
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      //Botao
+                      SizedBox(
+                        height: 55,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          onPressed: () {},
+                          label: const Text(
+                            'Add ao Carrinho',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.shopping_cart_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          //BACK ARROW
+          Positioned(
+            top: 10,
+            left: 10,
+            child: SafeArea(
+              child: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: CustomColors.customContrastColor,
+                ),
               ),
             ),
           ),
